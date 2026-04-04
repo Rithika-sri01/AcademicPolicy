@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE = 'http://localhost:5000/api';
+const BASE = 'https://academicpolicy.onrender.com/api';
 
 const client = axios.create({ baseURL: BASE });
 
