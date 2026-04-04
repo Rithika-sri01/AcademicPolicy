@@ -8,50 +8,39 @@ export default function App() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // Verify token with backend before auto-login
-    // Clear localStorage to force login on every reload (remove this in production)
-    localStorage.clear();
-    
     const token = localStorage.getItem('ap_token');
     const saved  = localStorage.getItem('ap_user');
 
     if (!token || !saved) {
-      // No saved session — go straight to login
       setChecking(false);
       return;
     }
 
-    // Validate token is still valid with backend
-    fetch('https://academicpolicy.onrender.com/api/auth/me' {
-      headers: { Authorization: `Bearer ${token}` }
+    fetch('https://academicpolicy.onrender.com/api/auth/me', {
+      headers: { Authorization: 'Bearer ' + token }
     })
       .then(res => {
         if (res.ok) {
-          // Token valid — restore session
           setUser(JSON.parse(saved));
         } else {
-          // Token expired or invalid — clear and show login
           localStorage.removeItem('ap_token');
           localStorage.removeItem('ap_user');
         }
       })
       .catch(() => {
-        // Backend not reachable — clear session, show login
         localStorage.removeItem('ap_token');
         localStorage.removeItem('ap_user');
       })
       .finally(() => setChecking(false));
   }, []);
 
-  const handleLogin = (userData) => setUser(userData);
-
+  const handleLogin  = (userData) => setUser(userData);
   const handleLogout = () => {
     localStorage.removeItem('ap_token');
     localStorage.removeItem('ap_user');
     setUser(null);
   };
 
-  // Show blank while checking — prevents flash of wrong page
   if (checking) {
     return (
       <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:'#F2EEFF'}}>
