@@ -22,7 +22,7 @@ export default function App() {
     }
 
     // Validate token is still valid with backend
-    fetch('http://localhost:3000/api/auth/me', {
+    fetch('https://academicpolicy.onrender.com/api/auth/me' {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
